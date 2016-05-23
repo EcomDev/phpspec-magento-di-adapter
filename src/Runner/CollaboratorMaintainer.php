@@ -37,6 +37,6 @@ class CollaboratorMaintainer implements MaintainerInterface
 
     public function getPriority()
     {
-        // TODO: Implement getPriority() method.
+        return 49;
     }
 }
