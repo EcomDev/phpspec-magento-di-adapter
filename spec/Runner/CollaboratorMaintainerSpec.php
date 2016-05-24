@@ -39,7 +39,7 @@ class CollaboratorMaintainerSpec extends ObjectBehavior
 
     function it_has_higher_priority_than_current_collaborator_maintainer()
     {
-        $this->getPriority()->shouldReturn(49);
+        $this->getPriority()->shouldReturn(51);
     }
 
 

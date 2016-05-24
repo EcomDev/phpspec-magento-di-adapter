@@ -4,6 +4,7 @@ namespace EcomDev\PHPSpec\MagentoDiAdapter;
 
 use Magento\Framework\Code\Generator\DefinedClasses;
 use Magento\Framework\Code\Generator\Io;
+use PhpSpec\Loader\Transformer\TypeHintIndex;
 
 /**
  * Validates parameters for Magento DI container
@@ -32,15 +33,24 @@ class ParameterValidator
     private $generators = [];
 
     /**
+     * Type hint index to check for tokenizer resolved classes
+     *
+     * @var TypeHintIndex
+     */
+    private $typeHintIndex;
+
+    /**
      * Configures dependencies of parameter validator
      *
      * @param Io $generationIo
      * @param DefinedClasses $definedClasses
+     * @param TypeHintIndex $typeHintIndex
      */
-    public function __construct(Io $generationIo, DefinedClasses $definedClasses)
+    public function __construct(Io $generationIo, DefinedClasses $definedClasses, TypeHintIndex $typeHintIndex)
     {
         $this->generationIo = $generationIo;
         $this->definedClasses = $definedClasses;
+        $this->typeHintIndex = $typeHintIndex;
     }
 
     /***
@@ -126,6 +136,20 @@ class ParameterValidator
                 include $generator->generate();
             }
         };
+        
+        if (($reflectionClass = $parameter->getDeclaringClass())
+            && ($reflectionMethod = $parameter->getDeclaringFunction())) {
+            $type = $this->typeHintIndex->lookup(
+                $reflectionClass->getName(),
+                $reflectionMethod->getName(),
+                '$' . $parameter->getName()
+            );
+
+            if ($type && !class_exists($type) && !interface_exists($type)) {
+                $catcher($type);
+                return $this;
+            }
+        }
 
         spl_autoload_register($catcher);
         try {
