@@ -18,7 +18,66 @@ This small PHPSpec extension allows you to test Magento 2.0 modules much more ea
     ```
 
 ## Usage
-TBD
+
+Make sure that when you write examples to specify fully qualified class name for auto-generated class. 
+
+```php
+<?php
+
+namespace spec\Acme\CustomMagentoModule\Model;
+
+use Magento\Catalog\Model\Product;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
+class ProductManagerSpec extends ObjectBehavior
+{
+    private $productFactory; 
+    
+    function let(ProductFactory $factory) {
+        $this->productFactory = $factory;    
+        $this->beConstructedWith($factory);
+    }
+    
+    function it_creates_items_via_product_factory(Product $product)
+    {
+        $this->productFactory->create()->willReturn($product)->shouldBeCalled();
+        $this->someCreationLogic();
+    }
+}
+```
+
+This approach will not get you a desired result, as PHP by default looks for undefined classes within the same namespace.
+So instead of `Magento\Catalog\Model\ProductFactory` it will generate a class `spec\Acme\CustomMagentoModule\Model\ProductFactory`, that is definitely not a desired behavior.
+
+In order to fix that make sure to specify fully qualified name in method signature or via `use` operator in the file header.
+
+```php
+<?php
+
+namespace spec\Acme\CustomMagentoModule\Model;
+
+use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\ProductFactory; // This class will be automatically generated
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
+class ProductManagerSpec extends ObjectBehavior
+{
+    private $productFactory; 
+    
+    function let(ProductFactory $factory) {
+        $this->productFactory = $factory;    
+        $this->beConstructedWith($factory);
+    }
+    
+    function it_creates_items_via_product_factory(Product $product)
+    {
+        $this->productFactory->create()->willReturn($product)->shouldBeCalled();
+        $this->someCreationLogic();
+    }
+}
+```
 
 ## Contribution
 Make a pull request based on develop branch
