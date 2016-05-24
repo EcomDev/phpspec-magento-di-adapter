@@ -9,6 +9,9 @@ use PhpSpec\Runner\Maintainer\MaintainerInterface;
 use PhpSpec\Runner\MatcherManager;
 use PhpSpec\SpecificationInterface;
 
+/**
+ * Collaborator maintainer for Magento DI classes auto-generation
+ */
 class CollaboratorMaintainer implements MaintainerInterface
 {
     /**
