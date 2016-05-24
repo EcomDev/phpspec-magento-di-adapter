@@ -13,6 +13,7 @@ use Magento\Framework\Api\Code\Generator\SearchResults;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PhpSpec\Extension\ExtensionInterface;
+use PhpSpec\Loader\Transformer\TypeHintIndex;
 use PhpSpec\ObjectBehavior;
 use PhpSpec\ServiceContainer;
 use Prophecy\Argument;
@@ -34,12 +35,15 @@ class ExtensionSpec extends ObjectBehavior
         $this->shouldImplement(ExtensionInterface::class);
     }
 
-    function it_creates_parameter_validator_factory_with_internal_io(Io $io)
+    function it_creates_parameter_validator_factory_with_internal_io(Io $io, TypeHintIndex $typeHintIndex)
     {
         $this->serviceContainer->get('ecomdev.phpspec.magento_di_adapter.code_generator.io')
             ->willReturn($io);
         $this->serviceContainer->get('ecomdev.phpspec.magento_di_adapter.code_generator.defined_classes')
             ->willReturn(new SimplifiedDefinedClasses());
+
+        $this->serviceContainer->get('loader.transformer.typehintindex')
+            ->willReturn($typeHintIndex);
 
         $validatorFactory = $this->parameterValidatorFactory();
         $validatorFactory->shouldImplement(\Closure::class);

@@ -70,7 +70,8 @@ class Extension implements ExtensionInterface
         return function (ServiceContainer $container) {
             $parameterValidator = new ParameterValidator(
                 $container->get('ecomdev.phpspec.magento_di_adapter.code_generator.io'),
-                $container->get('ecomdev.phpspec.magento_di_adapter.code_generator.defined_classes')
+                $container->get('ecomdev.phpspec.magento_di_adapter.code_generator.defined_classes'),
+                $container->get('loader.transformer.typehintindex')
             );
 
             $parameterValidator

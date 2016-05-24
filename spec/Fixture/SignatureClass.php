@@ -15,4 +15,9 @@ class SignatureClass
 
     }
 
+    function type_hint_index_resolved_class(TypeHintClassFactory $parameter)
+    {
+        
+    }
+
 }

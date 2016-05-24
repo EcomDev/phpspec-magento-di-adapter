@@ -8,10 +8,13 @@ use Magento\Framework\Code\Generator\Io;
 use Magento\Framework\Filesystem\Driver\File;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
+use PhpSpec\Loader\Transformer\TypeHintIndex;
 use spec\EcomDev\PHPSpec\MagentoDiAdapter\Fixture\Catcher;
 use spec\EcomDev\PHPSpec\MagentoDiAdapter\Fixture\SignatureClass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use spec\EcomDev\PHPSpec\MagentoDiAdapter\Fixture\TypeHintClass;
+use spec\EcomDev\PHPSpec\MagentoDiAdapter\Fixture\ValidClass;
 
 class ParameterValidatorSpec extends ObjectBehavior
 {
@@ -43,14 +46,20 @@ class ParameterValidatorSpec extends ObjectBehavior
      */
     private $classReflection;
 
-    function let()
+    /**
+     * @var TypeHintIndex
+     */
+    private $typeHintIndex;
+
+    function let(TypeHintIndex $typeHintIndex)
     {
         $this->vfs = vfsStream::setup('testcase');
         $this->io = new Io(new File(), $this->vfs->url());
         $this->definedClasses = new SimplifiedDefinedClasses();
         $this->classReflection = new \ReflectionClass(SignatureClass::class);
+        $this->typeHintIndex = $typeHintIndex;
 
-        $this->beConstructedWith($this->io, $this->definedClasses);
+        $this->beConstructedWith($this->io, $this->definedClasses, $this->typeHintIndex);
     }
 
     function it_is_possible_to_add_multiple_entity_generators()
@@ -95,6 +104,21 @@ class ParameterValidatorSpec extends ObjectBehavior
         $this->validate($functionReflection)->shouldReturn($this);
 
         $this->shouldCreateFile($this->vfs->url() . '/spec/EcomDev/PHPSpec/MagentoDiAdapter/Fixture/ValidClassFactory.php');
+    }
+
+    function it_supports_type_hint_index_method_data_retrieval()
+    {
+        $this->typeHintIndex->lookup(SignatureClass::class, 'type_hint_index_resolved_class', '$parameter')
+            ->willReturn(TypeHintClass::class . 'Factory')
+            ->shouldBeCalled();
+
+        $this->addGenerator(Generator\Factory::class, Generator\Factory::ENTITY_TYPE)->shouldReturn($this);
+
+        $functionReflection = $this->classReflection->getMethod('type_hint_index_resolved_class');
+
+        $this->validate($functionReflection)->shouldReturn($this);
+
+        $this->shouldCreateFile($this->vfs->url() . '/spec/EcomDev/PHPSpec/MagentoDiAdapter/Fixture/TypeHintClassFactory.php');
     }
 
     function it_does_not_generate_a_class_for_which_we_do_not_have_a_rule()
