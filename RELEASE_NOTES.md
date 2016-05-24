@@ -1,3 +1,12 @@
 # Release 0.1.0
 
-Factory generator adapter for PHPSpec auto-wiring in `let()` or `it_*()` methods.
+Magento DI adapter for PHPSpec auto-wiring in `let()` or `it_*()` methods.
+
+Supports such generators:
+
+* Factory
+* Repository
+* Converter
+* Persistor
+* Mapper
+* SearchResults 

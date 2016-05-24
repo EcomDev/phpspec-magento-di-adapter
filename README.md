@@ -1,6 +1,23 @@
 # PHPSpec Magento 2.0 DI Adapter [![Build Status](https://travis-ci.org/EcomDev/phpspec-magento-di-adapter.svg?branch=develop)](https://travis-ci.org/EcomDev/phpspec-magento-di-adapter?branch=develop)  [![Coverage Status](https://coveralls.io/repos/github/EcomDev/phpspec-magento-di-adapter/badge.svg?branch=develop)](https://coveralls.io/github/EcomDev/phpspec-magento-di-adapter?branch=develop)
 
-This small PHPSpec extension allows you to test Magento 2.0 modules much more easier by utilizing Factory generators of Magento\Framework\ObjectManager.
+This small PHPSpec extension allows you to test Magento 2.0 modules much more easier by utilizing generators of `Magento\Framework\ObjectManager`.
+
+## Why?
+Reasons why not to use `ObjectManager` in PHPSpec examples:
+
+1. It is heavy and requires stubbing full file system in order to run a simple spec example.
+2. Depending on ObjectManager is a bad idea, as you don't want to test some-else DI overrides.
+3. Simple modules that do not require database do not need fully functional object manager
+4. Adapting your business logic to another framework will require from you only to materialize generated classes, instead of depending on the whole ObjectManager library.
+
+## Supported Generators
+
+* Factory
+* Repository
+* Converter
+* Persistor
+* Mapper
+* SearchResults
 
 ## Installation
 
