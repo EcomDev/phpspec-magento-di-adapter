@@ -2,12 +2,11 @@
 
 namespace spec\EcomDev\PHPSpec\MagentoDiAdapter;
 
-use EcomDev\PHPSpec\MagentoDiAdapter\EntityGeneratorInterface;
 use Magento\Framework\Code\Generator\EntityAbstract;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class EntityGeneratorSpec extends ObjectBehavior
+class GeneratorWrapperSpec extends ObjectBehavior
 {
     /**
      * @var EntityAbstract
@@ -21,11 +20,6 @@ class EntityGeneratorSpec extends ObjectBehavior
             function () {},
             'entity'
         );
-    }
-
-    function it_implements_entity_generator_interface()
-    {
-        $this->shouldImplement(EntityGeneratorInterface::class);
     }
 
     function it_should_support_class_that_is_prefixed_with_suffix_in_argument()
@@ -43,7 +37,8 @@ class EntityGeneratorSpec extends ObjectBehavior
         $this->supports('Some\EntityClass')->shouldReturn(false);
     }
 
-    function it_allow_suffixed_class_name_and_generates_it()
+
+    function it_generates_a_class_with_created_generator()
     {
         $this->entityGenerator->init('Some\Class', 'Some\ClassEntity')->shouldBeCalled();
         $this->entityGenerator->generate()->willReturn('path/to/SomeClassEntity.php')->shouldBeCalled();
@@ -52,12 +47,18 @@ class EntityGeneratorSpec extends ObjectBehavior
         $this->generate('Some\ClassEntity')->shouldReturn('path/to/SomeClassEntity.php');
     }
 
-    function it_allow_separated_class_name_in_subnamespace_and_generates_it()
+    function it_allows_suffixed_class_name_in_subnamespace()
+    {
+        $this->entityGenerator->init('Some\Class', 'Some\ClassEntity')->shouldBeCalled();
+        $this->beConstructedWith($this->entityFactoryClosure(), 'entity');
+        $this->createGenerator('Some\ClassEntity')->shouldReturn($this->entityGenerator);
+    }
+
+    function it_allows_separated_class_name_in_subnamespace()
     {
         $this->entityGenerator->init('Some\Class', 'Some\Class\Entity')->shouldBeCalled();
-        $this->entityGenerator->generate()->willReturn('path/to/SomeClassEntity.php')->shouldBeCalled();
         $this->beConstructedWith($this->entityFactoryClosure(), 'entity');
-        $this->generate('Some\Class\Entity')->shouldReturn('path/to/SomeClassEntity.php');
+        $this->createGenerator('Some\Class\Entity')->shouldReturn($this->entityGenerator);
     }
 
     private function entityFactoryClosure()

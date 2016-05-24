@@ -2,7 +2,12 @@
 
 namespace EcomDev\PHPSpec\MagentoDiAdapter;
 
-class EntityGenerator implements EntityGeneratorInterface
+use Magento\Framework\Code\Generator\EntityAbstract;
+
+/**
+ * Wrapper for Magento native DI generators to simplify testing
+ */
+class GeneratorWrapper
 {
     /**
      * Abstract entity code generator
@@ -51,9 +56,21 @@ class EntityGenerator implements EntityGeneratorInterface
      */
     public function generate($className)
     {
+        return $this->createGenerator($className)->generate();
+    }
+
+    /**
+     * Creates a generator
+     *
+     * @param string $className
+     *
+     * @return EntityAbstract
+     */
+    public function createGenerator($className)
+    {
         $factory = $this->generatorFactory;
         $sourceClass = rtrim(substr($className, 0, strpos($className, ucfirst($this->classSuffix))), '\\');
         $entityGenerator = $factory($sourceClass, $className);
-        return $entityGenerator->generate();
+        return $entityGenerator;
     }
 }
