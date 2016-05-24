@@ -1,0 +1,51 @@
+{
+    "name": "ecomdev/phpspec-magento-di-adapter",
+    "description": "An adapter for DI features of Magento\\Framework to write easier your examples with PHPSpec. Does not use ObjectManager, only emulates some of its features",
+    "type": "library",
+    "keywords": [
+        "phpspec", "magento"
+    ],
+    "require": {
+        "php": "~5.6|>=7.0",
+        "magento/framework": "~100.0",
+        "zendframework/zend-stdlib": "~2.4.6",
+        "zendframework/zend-code": "~2.4.6",
+        "mikey179/vfsStream": "^1.6"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.4",
+        "squizlabs/php_codesniffer": "*",
+        "phpmd/phpmd": "^2.3",
+        "satooshi/php-coveralls": "dev-master",
+        "henrikbjorn/phpspec-code-coverage": "^2.0",
+        "phpspec/nyan-formatters": "^1.0",
+        "ecomdev/phpspec-file-matcher": "^1.0"
+    },
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Ivan Chepurnyi",
+            "email": "ivan@ecomdev.org"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "EcomDev\\PHPSpec\\MagentoDiAdapter\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "spec\\EcomDev\\PHPSpec\\MagentoDiAdapter\\": "spec/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin/"
+    },
+    "repositories": {
+        "magento": {
+            "type": "composer",
+            "url": "https://repo.magento.com/"
+        }
+    }
+}
