@@ -122,7 +122,11 @@ class ExtensionSpec extends ObjectBehavior
             ->shouldBeCalled();
         
         $this->serviceContainer
-            ->define('runner.maintainers.ecomdev_magento_collaborator', Argument::type(\Closure::class))
+            ->define(
+                'runner.maintainers.ecomdev_magento_collaborator',
+                Argument::type(\Closure::class),
+                ['runner.maintainers']
+            )
             ->shouldBeCalled();
 
         $this->load($this->serviceContainer, []);

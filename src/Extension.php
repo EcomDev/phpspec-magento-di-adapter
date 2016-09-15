@@ -54,7 +54,8 @@ class Extension implements \PhpSpec\Extension
 
         $container->define(
             'runner.maintainers.ecomdev_magento_collaborator',
-            $this->collaboratorMaintainerFactory()
+            $this->collaboratorMaintainerFactory(),
+            ['runner.maintainers']
         );
     }
 
