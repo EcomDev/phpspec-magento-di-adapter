@@ -1,4 +1,8 @@
-# Release 0.1.0
+# Release 1.0.0
+* Upgrade to PHPSpec 3.0
+* Update dependencies to the most recent version
+
+# Release 0.1.1
 
 Added usage of PHPSpec TypeHintIndex
 
