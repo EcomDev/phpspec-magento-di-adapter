@@ -6,10 +6,10 @@ use EcomDev\PHPSpec\MagentoDiAdapter\ParameterValidator;
 use PhpSpec\Loader\Node\SpecificationNode;
 use PhpSpec\ObjectBehavior;
 use PhpSpec\Loader\Node\ExampleNode;
-use PhpSpec\Runner\Maintainer\MaintainerInterface;
+use PhpSpec\Runner\Maintainer\Maintainer;
 use PhpSpec\Runner\CollaboratorManager;
 use PhpSpec\Runner\MatcherManager;
-use PhpSpec\SpecificationInterface;
+use PhpSpec\Specification;
 use Prophecy\Argument;
 
 class CollaboratorMaintainerSpec extends ObjectBehavior
@@ -29,7 +29,7 @@ class CollaboratorMaintainerSpec extends ObjectBehavior
 
     function it_should_implement_maintainer_interface()
     {
-        $this->shouldImplement(MaintainerInterface::class);
+        $this->shouldImplement(Maintainer::class);
     }
 
     function it_should_support_any_example_node(ExampleNode $example)
@@ -45,7 +45,7 @@ class CollaboratorMaintainerSpec extends ObjectBehavior
 
     function it_does_pass_regular_example_into_parameter_validator(
         ExampleNode $example,
-        SpecificationInterface $context,
+        Specification $context,
         MatcherManager $matchers,
         CollaboratorManager $collaborators,
         SpecificationNode $specificationNode,
@@ -66,7 +66,7 @@ class CollaboratorMaintainerSpec extends ObjectBehavior
 
     function it_does_pass_regular_example_into_parameter_validator_and_let_method_if_they_are_defined(
         ExampleNode $example,
-        SpecificationInterface $context,
+        Specification $context,
         MatcherManager $matchers,
         CollaboratorManager $collaborators,
         SpecificationNode $specificationNode,
@@ -92,7 +92,7 @@ class CollaboratorMaintainerSpec extends ObjectBehavior
 
     function it_does_not_have_anything_to_cleanup_on_teardown(
         ExampleNode $example,
-        SpecificationInterface $context,
+        Specification $context,
         MatcherManager $matchers,
         CollaboratorManager $collaborators
     )

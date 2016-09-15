@@ -5,14 +5,14 @@ namespace EcomDev\PHPSpec\MagentoDiAdapter\Runner;
 use EcomDev\PHPSpec\MagentoDiAdapter\ParameterValidator;
 use PhpSpec\Loader\Node\ExampleNode;
 use PhpSpec\Runner\CollaboratorManager;
-use PhpSpec\Runner\Maintainer\MaintainerInterface;
+use PhpSpec\Runner\Maintainer\Maintainer;
 use PhpSpec\Runner\MatcherManager;
-use PhpSpec\SpecificationInterface;
+use PhpSpec\Specification;
 
 /**
  * Collaborator maintainer for Magento DI classes auto-generation
  */
-class CollaboratorMaintainer implements MaintainerInterface
+class CollaboratorMaintainer implements Maintainer
 {
     /**
      * Parameter Validator instance
@@ -47,7 +47,7 @@ class CollaboratorMaintainer implements MaintainerInterface
      * Generates DI related stuff via parameter validator
      *
      * @param ExampleNode $example
-     * @param SpecificationInterface $context
+     * @param Specification $context
      * @param MatcherManager $matchers
      * @param CollaboratorManager $collaborators
      *
@@ -55,7 +55,7 @@ class CollaboratorMaintainer implements MaintainerInterface
      */
     public function prepare(
         ExampleNode $example,
-        SpecificationInterface $context,
+        Specification $context,
         MatcherManager $matchers,
         CollaboratorManager $collaborators
     ) {
@@ -70,7 +70,7 @@ class CollaboratorMaintainer implements MaintainerInterface
      * It does nothing on teardown...
      *
      * @param ExampleNode $example
-     * @param SpecificationInterface $context
+     * @param Specification $context
      * @param MatcherManager $matchers
      * @param CollaboratorManager $collaborators
      *
@@ -78,7 +78,7 @@ class CollaboratorMaintainer implements MaintainerInterface
      */
     public function teardown(
         ExampleNode $example,
-        SpecificationInterface $context,
+        Specification $context,
         MatcherManager $matchers,
         CollaboratorManager $collaborators
     ) {

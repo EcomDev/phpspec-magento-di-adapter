@@ -12,7 +12,7 @@ use Magento\Framework\Api\Code\Generator\Mapper as MapperGenerator;
 use Magento\Framework\Api\Code\Generator\SearchResults;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use PhpSpec\Extension\ExtensionInterface;
+use PhpSpec\Extension;
 use PhpSpec\Loader\Transformer\TypeHintIndex;
 use PhpSpec\ObjectBehavior;
 use PhpSpec\ServiceContainer;
@@ -32,7 +32,7 @@ class ExtensionSpec extends ObjectBehavior
 
     function it_should_implement_extension_interface()
     {
-        $this->shouldImplement(ExtensionInterface::class);
+        $this->shouldImplement(Extension::class);
     }
 
     function it_creates_parameter_validator_factory_with_internal_io(Io $io, TypeHintIndex $typeHintIndex)
@@ -105,26 +105,30 @@ class ExtensionSpec extends ObjectBehavior
     function it_adds_those_factories_into_container_on_load()
     {
         $this->serviceContainer
-            ->set('ecomdev.phpspec.magento_di_adapter.code_generator.io', Argument::type(\Closure::class))
+            ->define('ecomdev.phpspec.magento_di_adapter.code_generator.io', Argument::type(\Closure::class))
             ->shouldBeCalled();
 
         $this->serviceContainer
-            ->set('ecomdev.phpspec.magento_di_adapter.vfs', Argument::type(\Closure::class))
+            ->define('ecomdev.phpspec.magento_di_adapter.vfs', Argument::type(\Closure::class))
             ->shouldBeCalled();
 
         $this->serviceContainer
-            ->set('ecomdev.phpspec.magento_di_adapter.code_generator.defined_classes', Argument::type(\Closure::class))
+            ->define('ecomdev.phpspec.magento_di_adapter.code_generator.defined_classes', Argument::type(\Closure::class))
             ->shouldBeCalled();
 
 
         $this->serviceContainer
-            ->set('ecomdev.phpspec.magento_di_adapter.parameter_validator', Argument::type(\Closure::class))
+            ->define('ecomdev.phpspec.magento_di_adapter.parameter_validator', Argument::type(\Closure::class))
             ->shouldBeCalled();
         
         $this->serviceContainer
-            ->set('runner.maintainers.ecomdev_magento_collaborator', Argument::type(\Closure::class))
+            ->define(
+                'runner.maintainers.ecomdev_magento_collaborator',
+                Argument::type(\Closure::class),
+                ['runner.maintainers']
+            )
             ->shouldBeCalled();
 
-        $this->load($this->serviceContainer);
+        $this->load($this->serviceContainer, []);
     }
 }

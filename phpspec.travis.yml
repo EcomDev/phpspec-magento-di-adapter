@@ -12,5 +12,5 @@ code_coverage:
   output: build/coverage.xml
 
 extensions:
-  - PhpSpec\Extension\CodeCoverageExtension
-  - EcomDev\PHPSpec\FileMatcher\Extension
+  PhpSpecCodeCoverage\CodeCoverageExtension: ~
+  EcomDev\PHPSpec\FileMatcher\Extension: ~
