@@ -10,9 +10,7 @@ use Magento\Framework\ObjectManager\Code\Generator;
 use Magento\Framework\ObjectManager\Profiler\Code\Generator as ProfilerGenerator;
 use Magento\Framework\Api\Code\Generator\Mapper as MapperGenerator;
 use Magento\Framework\Api\Code\Generator\SearchResults;
-
 use org\bovigo\vfs\vfsStream;
-use PhpSpec\Extension\ExtensionInterface;
 use PhpSpec\ServiceContainer;
 
 /**
@@ -24,7 +22,7 @@ use PhpSpec\ServiceContainer;
  * @SuppressWarnings(CouplingBetweenObjects)
  * @SuppressWarnings(StaticAccess)
  */
-class Extension implements ExtensionInterface
+class Extension implements \PhpSpec\Extension
 {
 
     /**
@@ -32,29 +30,29 @@ class Extension implements ExtensionInterface
      *
      * @param ServiceContainer $container
      */
-    public function load(ServiceContainer $container)
+    public function load(ServiceContainer $container, array $params)
     {
-        $container->set(
+        $container->define(
             'ecomdev.phpspec.magento_di_adapter.vfs',
             $this->vfsFactory()
         );
 
-        $container->set(
+        $container->define(
             'ecomdev.phpspec.magento_di_adapter.code_generator.io',
             $this->ioFactory()
         );
 
-        $container->set(
+        $container->define(
             'ecomdev.phpspec.magento_di_adapter.code_generator.defined_classes',
             $this->simplifiedDefinedClassesFactory()
         );
 
-        $container->set(
+        $container->define(
             'ecomdev.phpspec.magento_di_adapter.parameter_validator',
             $this->parameterValidatorFactory()
         );
 
-        $container->set(
+        $container->define(
             'runner.maintainers.ecomdev_magento_collaborator',
             $this->collaboratorMaintainerFactory()
         );

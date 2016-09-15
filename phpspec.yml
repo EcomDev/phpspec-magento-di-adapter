@@ -6,5 +6,5 @@ suites:
     spec_path: %paths.config%
 formatter.name: nyan.cat
 extensions:
-  - PhpSpec\NyanFormattersExtension\Extension
-  - EcomDev\PHPSpec\FileMatcher\Extension
+  PhpSpec\NyanFormattersExtension\Extension: ~
+  EcomDev\PHPSpec\FileMatcher\Extension: ~
